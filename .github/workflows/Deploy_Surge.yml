@@ -40,4 +40,4 @@ jobs:
       
       #Run surge
       - name: Run surge
-        run: surge ./ project002_zaheer0008.surge.sh --token ${{secrets.Surge_Token}}
+        run: surge ./build project002_zaheer0008.surge.sh --token ${{secrets.Surge_Token}}
