@@ -1,17 +1,49 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+function Room(){
+  const [temp, setTemp] =React.useState(22);
+  const state = React.useState(true);
+  const isLit = state[0];
+  const setLit = state[1];
+  const brightness = isLit ? 'lit' : 'dark';
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+  return(
+    <div className={brightness}>
+      <p>The room is {isLit ? 'lit' : 'dark'}.</p>
+      <button onClick={()=> setLit(!isLit)}>Toggle</button>
+      <button onClick={()=>{setLit(true)}}>On</button>
+      <button onClick={()=>{setLit(false)}}>Off</button>
+      <p>Room Temperature is {temp} Celsius.</p>
+      <button onClick={()=>{setTemp(temp+1)}}>+</button>
+      <button onClick={()=>{setTemp(temp-1)}}>-</button>
+    </div>
+  );
+}
+
+function Reddit(){
+    const [posts, setPosts] = React.useState([]);
+    React.useEffect(() => {
+      fetch(`https://www.reddit.com/r/reactjs.json`)
+      .then(res=>res.json())
+      .then((res)=>{
+        const newPosts = res.data.children.map(obj => obj.data);
+        setPosts(newPosts);
+      }
+      )
+    },[])
+    return(
+      <div>
+        <h1>/r/reactjs</h1>
+        <ul style={{listStyleType:"none"}}>
+          {posts.map(post => (
+            <li key={post.id}><a href={post.url}>{post.title}</a><br /> Score: {post.score} Author: {post.author_fullname}</li>
+          ))}
+        </ul>
+      </div>
+    );
+}
+
+ReactDOM.render(<Reddit />, document.getElementById('root'));
