@@ -6,6 +6,8 @@ import './index.css';
 
 function Reddit(){
     const [posts, setPosts] = React.useState([]);
+    const [theme, setTheme] = React.useState('blue');
+    const onClickHandler = ()=>{setTheme(theme === 'red'? 'blue':'red');};
     React.useEffect(() => {
       fetch(`https://www.reddit.com/r/reactjs.json`)
       .then(res=>res.json())
@@ -17,6 +19,9 @@ function Reddit(){
     },[])
     return(
       <div>
+        <Text theme={theme  }/>
+        <h1>{theme}</h1>
+        <button onClick={onClickHandler}>ToggleTheme</button>
         <h1>/r/reactjs</h1>
         <ul style={{listStyleType:"none"}}>
           {posts.map(post => (
@@ -25,6 +30,14 @@ function Reddit(){
         </ul>
       </div>
     );
+}
+
+function Text({theme}){
+  return(
+      <h1 style={{color:`${theme}`}}>
+          {theme}
+      </h1>
+  );
 }
 
 ReactDOM.render(<Reddit />, document.getElementById('root'));
